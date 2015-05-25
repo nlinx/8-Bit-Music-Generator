@@ -86,11 +86,17 @@ angular.module("main", ["d3"])
   var gain = context.createGain();
   gain.gain.value = 0;
 
-  var startNote = function(event) {
+  var startNote = function() {
+    console.log("hi")
     // get d3 data; d3 data will be the note values
-    var noteFrequency = this.notes[data]
-    this.oscillator.frequency.value = noteFrequency;
-    this.gain.gain.value = 1;
+    // var noteFrequency = this.notes[data]
+    // this.oscillator.frequency.value = noteFrequency;
+    // this.gain.gain.value = 1;
+    // var frq = notes[e.currentTarget.id];
+    // if (frq) {
+    //   oscillator.frequency.setValueAtTime(frq, context.currentTime);
+    //   volume.gain.value = 1;
+    // }
   }
   var stopNote = function() {
     this.gain.gain.value = 0;

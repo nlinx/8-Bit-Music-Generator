@@ -12,10 +12,9 @@
   </form>
   <d3orbs class="orb"
   ng-repeat="notes in notesData"
+  ng-mousedown=startNote(notes)
+  ng-mouseup=stopNote(notes)
   >
-  <!-- {{notes}} -->
-  <!-- ng-mousedown=startNotes({{notes}})
-  ng-mouseup=stopNotes({{notes}}) -->
   </d3orbs>
 
 
