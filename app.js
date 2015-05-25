@@ -1,8 +1,8 @@
-angular.module('main', [])
-.controller('sound', function($scope, data) {
+angular.module("main", ["d3"])
+.controller("sound", function($scope, data) {
  angular.extends($scope, data);
 })
-.factory('data', function() {
+.factory("data", function() {
   var notes = {
     'C0':16.35,'C#0':17.32,'Db0':17.32,'D0':18.35,'D#0':19.45,
     'Eb0':19.45,'E0':20.60,'F0':21.83,'F#0':23.12,'Gb0':23.12,
@@ -37,7 +37,7 @@ angular.module('main', [])
   };
   var context = new AudioContext();
   var oscillator = context.createOscillator();
-  oscillator.type = 'square';
+  oscillator.type = "square";
   oscillator.start(0);
   var gain = context.createGain();
   gain.gain.value = 0;
@@ -58,6 +58,32 @@ angular.module('main', [])
   // has a function to start the note
   // has a function to stop the note
 })
-.factory('d3', function() {
 
-})
+
+angular.module('d3', [])
+  .factory('d3Service', ['$document', '$q', '$rootScope',
+    function($document, $q, $rootScope) {
+      var d = $q.defer();
+      function onScriptLoad() {
+        // Load client in the browser
+        $rootScope.$apply(function() { d.resolve(window.d3); });
+      }
+      // Create a script tag with d3 as the source
+      // and call our onScriptLoad callback when it
+      // has been loaded
+      var scriptTag = $document[0].createElement('script');
+      scriptTag.type = 'text/javascript';
+      scriptTag.async = true;
+      scriptTag.src = 'node_modules/d3/d3.min.js';
+      scriptTag.onreadystatechange = function () {
+        if (this.readyState == 'complete') onScriptLoad();
+      }
+      scriptTag.onload = onScriptLoad;
+
+      var s = $document[0].getElementsByTagName('body')[0];
+      s.appendChild(scriptTag);
+
+      return {
+        d3: function() { return d.promise; }
+      };
+}]);
