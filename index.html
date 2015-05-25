@@ -1,20 +1,23 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="main">
 <head>
   <title>8 Bit Music Maker</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
-<body>
+<body ng-controller="sound">
   <form>
     <input type="text" class="inputBar" placeholder="A1 A2 A3 A4 A5 A6"></input>
   </form>
-  <div class="d3Holder" ng-controller="main"></div>
+  <div class="d3Holder" ng-repeat="notes in notesData">
+    <d3orb ng-mouseon=startNote({{notes}} ng-mouseoff=stopNote({{notes}}><d3orb>
+
+  </div>
 
 
   <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>
-  <script type="text/javascript" src="d3helper"></script>
+  <script type="text/javascript" src="d3helper.js"></script>
   <script type="text/javascript" src="app.js"></script>
 </body>
 </html>
