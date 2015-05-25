@@ -10,10 +10,13 @@
   <form>
     <input type="text" class="inputBar" placeholder="A1 A2 A3 A4 A5 A6"></input>
   </form>
-  <div class="d3Holder" ng-repeat="notes in notesData">
-    <d3orb ng-mouseon=startNote({{notes}} ng-mouseoff=stopNote({{notes}}><d3orb>
-
-  </div>
+  <d3orbs class="orb"
+  ng-repeat="notes in notesData"
+  >
+  <!-- {{notes}} -->
+  <!-- ng-mousedown=startNotes({{notes}})
+  ng-mouseup=stopNotes({{notes}}) -->
+  </d3orbs>
 
 
   <script type="text/javascript" src="node_modules/angular/angular.min.js"></script>

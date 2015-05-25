@@ -28,23 +28,20 @@ angular.module("main", ["d3"])
   angular.extend($scope, data);
 })
 
-.directive('d3Orbs', ['d3Service', function(d3Service) {
+.directive('d3orbs', ['d3Service', function(d3Service) {
   return {
     restrict: 'EA',
-    scope: {},
     link: function(scope, element, attrs) {
       d3Service.d3().then(function(d3) {
-        window.onresize = function() {
-          scope.$apply();
-        };
-        scope.render = function() {
-
-          d3.select(".d3Holder")
-          .data(data)
-          .enter()
-          .append("svg")
-          .style('width', '100%');
-        }
+        d3.select(element[0]).selectAll("div")
+        .data([scope.notes]).enter()
+        .append("div")
+        .style({
+          'height': "" + Math.sqrt(window.outerHeight * (window.outerWidth - 19) / 137) - 14 + "px",
+          'width': "" + Math.sqrt(window.outerHeight * (window.outerWidth - 19) / 137) - 14 + "px",
+          'background-color': 'black',
+          'display': "inline-block"
+        })
       });
     }};
   }])
@@ -91,7 +88,7 @@ angular.module("main", ["d3"])
 
   var startNote = function(event) {
     // get d3 data; d3 data will be the note values
-    noteFrequency = this.notes[data]
+    var noteFrequency = this.notes[data]
     this.oscillator.frequency.value = noteFrequency;
     this.gain.gain.value = 1;
   }
