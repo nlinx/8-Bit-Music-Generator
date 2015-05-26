@@ -5,7 +5,8 @@ form {
   text-align: center;
   margin: 0px auto;
 }
-.inputBar {
+.leftBar, .rightBar {
+  display: "block";
   width: 400px;
   font-size: 18px;
   margin-bottom: 15px;
@@ -24,14 +25,27 @@ form {
   text-align: center;
   margin: 0px auto;
 }
-
-.inactive, .active {
-  border-radius: 10px;
-}
 .inactive {
+  border-radius: 10px;
   background-color: black
 }
-.active {
+.inactiveLeft, .activeLeft {
+  border-radius: 10px;
+}
+.inactiveLeft {
+  background-color: black
+}
+.activeLeft {
   background-color: orange;
-  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.1s;
+  /*transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.1s;*/
+}
+.inactiveRight, .activeRight {
+  border-radius: 10px;
+}
+.inactiveRight {
+  background-color: black
+}
+.activeRight {
+  background-color: green;
+  /*transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.1s;*/
 }

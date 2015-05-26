@@ -7,16 +7,16 @@
   <link rel="stylesheet" type="text/css" href="app.css" />
 </head>
 <body ng-controller="soundController">
-  <form ng-submit="playSong(value, $event)">
-    <input type="text" class="inputBar" ng-model="value" placeholder="E5 E5 E5 C5 E5 G5 G4" />
-    <!-- need to create scrollDown function -->
-    <button type="submit" class="submitButton" ng-click="scrollDown()">Play</button>
+  <form ng-submit="playSong(leftValue, $event, oscillatorLeft, gainLeft); playSong(rightValue, $event, oscillatorRight, gainRight)">
+    <input type="text" class="leftBar" ng-model="leftValue" placeholder="Left" />
+    <input type="text" class="rightBar" ng-model="rightValue" placeholder="Right" />
+    <button type="submit" class="submitButton">Play</button>
   </form>
   <div class="d3holder">
     <d3orbs class="orb"
     ng-repeat="notes in notesData"
-    ng-mousedown="startNote($event)"
-    ng-mouseup="stopNote($event)"
+    ng-mousedown="startNote($event, undefined, oscillatorLeft, gainLeft)"
+    ng-mouseup="stopNote($event, oscillatorLeft, gainLeft)"
     >
     </d3orbs>
   </div>
