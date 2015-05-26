@@ -103,38 +103,23 @@ angular.module("main", ["d3"])
     this.gain.gain.value = 0;
   }
 
-  var playInput = function(input) {
-  }
-
-  var bool = true;
   var playSong = function(input) {
     var notesArray = input.split(" ");
     var that = this;
     var count = 0;
     var timer = setInterval(function() {
-      that.startNote(notesArray[count])
-      count++;
-      if (count === notesArray.length) {
+      if (notes[notesArray[count]] !== undefined) {
+        that.startNote(notesArray[count])
+        count++;
+        if (count === notesArray.length) {
+          clearInterval(timer);
+        }
+        setTimeout(function() {that.stopNote()}
+          , 175);
+      } else {
         clearInterval(timer);
       }
-      setTimeout(function() {that.stopNote()}
-        , 175);
     }, 100)
-        // setTimeout(function() {
-        //   console.log(x)
-        //   that.startNote(notesArray[x])
-        // }, 1000);
-    // while (notesArray.length > 0) {
-    //   if (bool) {
-    //     this.startNote(notesArray[0]);
-    //     bool = false;
-    //     setTimeout(function() {
-    //       this.stopNote();
-    //       notesArray.shift();
-    //       bool = true;
-    //     }.bind(this), 250)
-    //   }
-    // }
   }
 
   return {
@@ -143,7 +128,6 @@ angular.module("main", ["d3"])
     gain: gain,
     startNote: startNote,
     stopNote: stopNote,
-    playInput: playInput,
     playSong: playSong
   }
 })
