@@ -111,9 +111,10 @@ angular.module("main", ["d3"])
   };
   var context = new AudioContext();
 
+
   // left oscillator
   var oscillatorLeft = context.createOscillator();
-  oscillatorLeft.type = "sawtooth";
+  oscillatorLeft.type = "square";
   oscillatorLeft.start(0);
   var gainLeft = context.createGain();
   gainLeft.gain.value = 0;
@@ -122,7 +123,7 @@ angular.module("main", ["d3"])
 
   // right oscillator
   var oscillatorRight = context.createOscillator();
-  oscillatorRight.type = "sawtooth";
+  oscillatorRight.type = "square";
   oscillatorRight.start(0);
   var gainRight = context.createGain();
   gainRight.gain.value = 0;
@@ -131,7 +132,7 @@ angular.module("main", ["d3"])
 
   // third oscillator
   var oscillator3 = context.createOscillator();
-  oscillator3.type = "sawtooth";
+  oscillator3.type = "square";
   oscillator3.start(0);
   var gain3 = context.createGain();
   gain3.gain.value = 0;

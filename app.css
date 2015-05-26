@@ -37,7 +37,6 @@ form {
 }
 .activeLeft {
   background-color: orange;
-  /*transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.1s;*/
 }
 .inactiveRight, .activeRight {
   border-radius: 10px;
@@ -47,5 +46,4 @@ form {
 }
 .activeRight {
   background-color: green;
-  /*transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.1s;*/
 }
