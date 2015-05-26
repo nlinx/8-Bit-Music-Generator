@@ -1,7 +1,7 @@
 angular.module("main", ["d3"])
 
 .controller("soundController", function($scope, notesFactory, $rootScope) {
-  $scope.notesData = ["C0", "C#0", "Db0", "D0", "D#0",
+  $scope.notesData = _.shuffle(["C0", "C#0", "Db0", "D0", "D#0",
   "Eb0", "E0", "F0", "F#0", "Gb0", "G0",
   "G#0", "Ab0", "A0", "A#0", "Bb0", "B0",
   "C1", "C#1", "Db1", "D1", "D#1", "Eb1",
@@ -24,7 +24,7 @@ angular.module("main", ["d3"])
   "C7", "C#7", "Db7", "D7", "D#7", "Eb7",
   "E7", "F7", "F#7", "Gb7", "G7", "G#7",
   "Ab7", "A7", "A#7", "Bb7", "B7", "C8"
-  ];
+  ]);
   angular.extend($scope, notesFactory);
 
   $rootScope.$on("notePlayed", function(event, $event, note) {
