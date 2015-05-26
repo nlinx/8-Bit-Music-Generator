@@ -15,8 +15,8 @@
   <div class="d3holder">
     <d3orbs class="orb"
     ng-repeat="notes in notesData"
-    ng-mousedown="startNote(undefined, $event)"
-    ng-mouseup="stopNote()"
+    ng-mousedown="startNote($event)"
+    ng-mouseup="stopNote($event)"
     >
     </d3orbs>
   </div>

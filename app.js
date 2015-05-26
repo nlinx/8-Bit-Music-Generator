@@ -26,9 +26,30 @@ angular.module("main", ["d3"])
   "Ab7", "A7", "A#7", "Bb7", "B7", "C8"
   ];
   angular.extend($scope, notesFactory);
-  $rootScope.$on("notePlayed", function(event, $event) {
-    console.log($event.target);
-    console.log("trigger sent");
+
+  $rootScope.$on("notePlayed", function(event, $event, note) {
+    var x = $event;
+    (function(holder) {
+      if (holder.target.nodeName === "DIV") {
+        holder.target.setAttribute( "class", "active" );
+      } else {
+        document.getElementById(note).setAttribute("class", "active");
+      }
+    })(x)
+  })
+
+  $rootScope.$on("noteStopped", function(event, $event, note) {
+    var x = $event;
+    (function(holder) {
+      if (holder.target.nodeName === "DIV") {
+        holder.target.setAttribute( "class", "inactive" )
+      } else {
+        var activeArray = document.getElementsByClassName("active");
+        for (var i = 0; i < activeArray.length; i++) {
+          activeArray[i].setAttribute("class", "inactive");
+        }
+      }
+    })(x)
   })
 })
 
@@ -43,12 +64,10 @@ angular.module("main", ["d3"])
         .style({
           'height': "77.66px",
           'width': "77.66px",
-          'background-color': 'black',
           'display': "inline-block"
         })
-        // .attr("ng-class", "d3class")
-        // .attr("ng-mousedown", "d3class='active'")
-        // .attr("ng-mouseup", "d3class=''")
+        .attr("class", "inactive")
+        .attr("id", scope.notes)
       });
     }};
   }])
@@ -96,7 +115,7 @@ angular.module("main", ["d3"])
   oscillator.connect(gain);
   gain.connect(context.destination);
 
-  var startNote = function(inputNote, $event) {
+  var startNote = function($event, inputNote) {
     inputNote = inputNote || this.notes;
     var noteFrequency = notes[inputNote];
     this.oscillator.frequency.value = noteFrequency;
@@ -104,11 +123,12 @@ angular.module("main", ["d3"])
     if (noteFrequency) {
       oscillator.frequency.setValueAtTime(noteFrequency, context.currentTime);
       gain.gain.value = 1;
-      $rootScope.$emit("notePlayed", $event);
+      $rootScope.$broadcast("notePlayed", $event, inputNote);
     }
   }
-  var stopNote = function() {
+  var stopNote = function($event) {
     this.gain.gain.value = 0;
+    $rootScope.$broadcast("noteStopped", $event);
   }
 
   var playSong = function(input, $event) {
@@ -117,13 +137,12 @@ angular.module("main", ["d3"])
     var count = 0;
     var timer = setInterval(function() {
       if (notes[notesArray[count]] !== undefined) {
-        that.startNote(notesArray[count], $event)
+        that.startNote($event, notesArray[count])
         count++;
         if (count === notesArray.length) {
-          console.log("timer cleared")
           clearInterval(timer);
         }
-        setTimeout(function() {that.stopNote()}
+        setTimeout(function() {that.stopNote($event)}
           , 175);
       } else {
         clearInterval(timer);
