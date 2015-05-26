@@ -111,10 +111,9 @@ angular.module("main", ["d3"])
   };
   var context = new AudioContext();
 
-
   // left oscillator
   var oscillatorLeft = context.createOscillator();
-  oscillatorLeft.type = "square";
+  oscillatorLeft.type = "sawtooth";
   oscillatorLeft.start(0);
   var gainLeft = context.createGain();
   gainLeft.gain.value = 0;
@@ -123,7 +122,7 @@ angular.module("main", ["d3"])
 
   // right oscillator
   var oscillatorRight = context.createOscillator();
-  oscillatorRight.type = "square";
+  oscillatorRight.type = "sawtooth";
   oscillatorRight.start(0);
   var gainRight = context.createGain();
   gainRight.gain.value = 0;
@@ -132,7 +131,7 @@ angular.module("main", ["d3"])
 
   // third oscillator
   var oscillator3 = context.createOscillator();
-  oscillator3.type = "square";
+  oscillator3.type = "sawtooth";
   oscillator3.start(0);
   var gain3 = context.createGain();
   gain3.gain.value = 0;
@@ -158,17 +157,20 @@ angular.module("main", ["d3"])
   var playSong = function(input, $event, oscillator, gain) {
     input = input || "";
     var notesArray = input.split(" ");
-    console.log(notesArray);
     var that = this;
     var count = 0;
     var timer = setInterval(function() {
       ""
-      if (notes[notesArray[count]] !== undefined || notesArray[count] === "_" || notesArray[count][2] === "-") {
+      if (notes[notesArray[count]] !== undefined || notesArray[count] === "_" || _.indexOf(notesArray[count], "-") !== -1) {
         if (notesArray[count] !== "_") {
           if (notesArray[count][2] === "-") {
             that.startNote($event, notesArray[count].substr(0,2), oscillator3, gain)
-            that.startNote($event, notesArray[count].substr(3,2), oscillator, gain)
+            that.startNote($event, notesArray[count].substr(3,3), oscillator, gain)
+          }  else if (notesArray[count][3] === "-") {
+            that.startNote($event, notesArray[count].substr(0,3), oscillator3, gain)
+            that.startNote($event, notesArray[count].substr(4,3), oscillator, gain)
           } else {
+            console.log("hi")
             that.startNote($event, notesArray[count], oscillator, gain)
           }
         }
@@ -179,22 +181,22 @@ angular.module("main", ["d3"])
         setTimeout(function() {
           that.stopNote($event, oscillator3, gain);
           that.stopNote($event, oscillator, gain);
-        }, 175);
+        }, 250);
       } else {
         clearInterval(timer);
       }
     }, 100)
-  }
+}
 
-  return {
-    context: context,
-    oscillatorLeft: oscillatorLeft,
-    oscillatorRight: oscillatorRight,
-    oscillator3: oscillator3,
-    gainRight: gainRight,
-    gainLeft: gainLeft,
-    startNote: startNote,
-    stopNote: stopNote,
-    playSong: playSong
-  }
+return {
+  context: context,
+  oscillatorLeft: oscillatorLeft,
+  oscillatorRight: oscillatorRight,
+  oscillator3: oscillator3,
+  gainRight: gainRight,
+  gainLeft: gainLeft,
+  startNote: startNote,
+  stopNote: stopNote,
+  playSong: playSong
+}
 })
