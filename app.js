@@ -112,6 +112,7 @@ angular.module("main", ["d3"])
         that.startNote(notesArray[count])
         count++;
         if (count === notesArray.length) {
+          console.log("timer cleared")
           clearInterval(timer);
         }
         setTimeout(function() {that.stopNote()}
