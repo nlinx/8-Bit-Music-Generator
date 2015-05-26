@@ -86,28 +86,64 @@ angular.module("main", ["d3"])
   var gain = context.createGain();
   gain.gain.value = 0;
 
-  var startNote = function() {
-    console.log("hi")
-    // get d3 data; d3 data will be the note values
-    // var noteFrequency = this.notes[data]
-    // this.oscillator.frequency.value = noteFrequency;
-    // this.gain.gain.value = 1;
-    // var frq = notes[e.currentTarget.id];
-    // if (frq) {
-    //   oscillator.frequency.setValueAtTime(frq, context.currentTime);
-    //   volume.gain.value = 1;
-    // }
+  oscillator.connect(gain);
+  gain.connect(context.destination);
+
+  var startNote = function(inputNote) {
+    inputNote = inputNote || this.notes;
+    var noteFrequency = notes[inputNote];
+    this.oscillator.frequency.value = noteFrequency;
+    this.gain.gain.value = 1;
+    if (noteFrequency) {
+      oscillator.frequency.setValueAtTime(noteFrequency, context.currentTime);
+      gain.gain.value = 1;
+    }
   }
   var stopNote = function() {
     this.gain.gain.value = 0;
   }
 
+  var playInput = function(input) {
+  }
+
+  var bool = true;
+  var playSong = function(input) {
+    var notesArray = input.split(" ");
+    var that = this;
+    var count = 0;
+    var timer = setInterval(function() {
+      that.startNote(notesArray[count])
+      count++;
+      if (count === notesArray.length) {
+        clearInterval(timer);
+      }
+      setTimeout(function() {that.stopNote()}
+        , 175);
+    }, 100)
+        // setTimeout(function() {
+        //   console.log(x)
+        //   that.startNote(notesArray[x])
+        // }, 1000);
+    // while (notesArray.length > 0) {
+    //   if (bool) {
+    //     this.startNote(notesArray[0]);
+    //     bool = false;
+    //     setTimeout(function() {
+    //       this.stopNote();
+    //       notesArray.shift();
+    //       bool = true;
+    //     }.bind(this), 250)
+    //   }
+    // }
+  }
+
   return {
-    notes: notes,
     context: context,
     oscillator: oscillator,
     gain: gain,
     startNote: startNote,
-    stopNote: stopNote
+    stopNote: stopNote,
+    playInput: playInput,
+    playSong: playSong
   }
 })
