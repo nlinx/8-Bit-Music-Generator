@@ -1,6 +1,6 @@
 angular.module("main", ["d3"])
 
-.controller("sound", function($scope, data) {
+.controller("soundController", function($scope, notesFactory, $rootScope) {
   $scope.notesData = ["C0", "C#0", "Db0", "D0", "D#0",
   "Eb0", "E0", "F0", "F#0", "Gb0", "G0",
   "G#0", "Ab0", "A0", "A#0", "Bb0", "B0",
@@ -25,7 +25,11 @@ angular.module("main", ["d3"])
   "E7", "F7", "F#7", "Gb7", "G7", "G#7",
   "Ab7", "A7", "A#7", "Bb7", "B7", "C8"
   ];
-  angular.extend($scope, data);
+  angular.extend($scope, notesFactory);
+  $rootScope.$on("notePlayed", function(event, $event) {
+    console.log($event.target);
+    console.log("trigger sent");
+  })
 })
 
 .directive('d3orbs', ['d3Service', function(d3Service) {
@@ -37,16 +41,19 @@ angular.module("main", ["d3"])
         .data([scope.notes]).enter()
         .append("div")
         .style({
-          'height': "" + Math.sqrt(window.outerHeight * (window.outerWidth - 19) / 137) - 14 + "px",
-          'width': "" + Math.sqrt(window.outerHeight * (window.outerWidth - 19) / 137) - 14 + "px",
+          'height': "77.66px",
+          'width': "77.66px",
           'background-color': 'black',
           'display': "inline-block"
         })
+        // .attr("ng-class", "d3class")
+        // .attr("ng-mousedown", "d3class='active'")
+        // .attr("ng-mouseup", "d3class=''")
       });
     }};
   }])
 
-.factory("data", function() {
+.factory("notesFactory", function($rootScope) {
   var notes = {
     'C0':16.35,'C#0':17.32,'Db0':17.32,'D0':18.35,'D#0':19.45,
     'Eb0':19.45,'E0':20.60,'F0':21.83,'F#0':23.12,'Gb0':23.12,
@@ -89,7 +96,7 @@ angular.module("main", ["d3"])
   oscillator.connect(gain);
   gain.connect(context.destination);
 
-  var startNote = function(inputNote) {
+  var startNote = function(inputNote, $event) {
     inputNote = inputNote || this.notes;
     var noteFrequency = notes[inputNote];
     this.oscillator.frequency.value = noteFrequency;
@@ -97,19 +104,20 @@ angular.module("main", ["d3"])
     if (noteFrequency) {
       oscillator.frequency.setValueAtTime(noteFrequency, context.currentTime);
       gain.gain.value = 1;
+      $rootScope.$emit("notePlayed", $event);
     }
   }
   var stopNote = function() {
     this.gain.gain.value = 0;
   }
 
-  var playSong = function(input) {
+  var playSong = function(input, $event) {
     var notesArray = input.split(" ");
     var that = this;
     var count = 0;
     var timer = setInterval(function() {
       if (notes[notesArray[count]] !== undefined) {
-        that.startNote(notesArray[count])
+        that.startNote(notesArray[count], $event)
         count++;
         if (count === notesArray.length) {
           console.log("timer cleared")

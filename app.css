@@ -1,7 +1,30 @@
+body {
+  font-family: "Helvetica Neue", "Helvetica", "Calibri";
+}
+form {
+  text-align: center;
+  margin: 0px auto;
+}
 .inputBar {
-
+  width: 400px;
+  font-size: 18px;
+  margin-bottom: 15px;
+  margin-top: 10px;
+  padding: 8px 15px;
 }
 
-.d3Holder {
+.submitButton {
+  font-size: 18px;
+  padding: 4px 18px;
+  height: 30px;
+  margin: 18px;
+}
 
+.d3holder {
+  text-align: center;
+  margin: 0px auto;
+}
+.active {
+  background-color: orange;
+  transition:all cubic-bezier(0.250, 0.460, 0.450, 0.940) 0.5s;
 }
